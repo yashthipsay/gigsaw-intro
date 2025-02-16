@@ -5,12 +5,26 @@ import Image from "next/image"
 export function PhoneShowcase() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
-
   const screens = [
     { src: "/image-1.jpg", angle: -15 },
     { src: "/image-2.jpg", angle: 0 },
     { src: "/image-3.jpg", angle: 15 },
   ]
+
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  // Variant for mobile fade-in
+  const mobileVariant = {
+    initial: { opacity: 0, y: 50 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.2 }
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -24,43 +38,48 @@ export function PhoneShowcase() {
     offset: ["start end", "end start"],
   })
 
-  // Transform values for scroll animations
+  // Transform values for scroll animations for non-mobile devices
   const y = useTransform(scrollYProgress, [0, 1], [-50, 50])
   const scale = useTransform(
     scrollYProgress,
     [0, 0.4, 0.5, 0.6, 1],
-    [0.8, 0.9, 1, 1, 1] // Scales up and maintains size
+    [0.8, 0.9, 1, 1, 1]
   )
   const leftX = useTransform(
     scrollYProgress,
     [0, 0.4, 0.5, 0.6, 1],
-    [-100, -20, 0, 0, 0] // Slides in from left, stays in position
+    [-100, -20, 0, 0, 0]
   )
   const rightX = useTransform(
     scrollYProgress,
     [0, 0.4, 0.5, 0.6, 1],
-    [100, 20, 0, 0, 0] // Slides in from right, stays in position
+    [100, 20, 0, 0, 0]
   )
   const contentOpacity = useTransform(
     scrollYProgress,
     [0, 0.4, 0.5, 0.6, 1],
-    [0, 0.8, 1, 1, 1] // Changed to maintain visibility after fade in
+    [0, 0.8, 1, 1, 1]
   )
 
   return (
     <div
       ref={containerRef}
-      className="min-h-[60vh] flex items-center justify-center gap-4 relative overflow-hidden px-4"
+      className="min-h-[60vh] flex flex-col md:flex-row items-center justify-center gap-12 relative overflow-hidden"
     >
       {/* Left Column: Brand Logo & Caption */}
       <motion.div 
-        className="flex flex-col justify-center space-y-4 max-w-md"
-        style={{
-          x: leftX,
-          opacity: contentOpacity
-        }}
-      >
-        <div className="flex items-center space-x-2">
+      className="flex flex-col items-center md:items-start text-center md:text-left space-y-6 max-w-md"
+      {...(isMobile 
+        ? {
+            initial: { opacity: 0, y: 50 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { duration: 0.6, ease: "easeOut" }
+          }
+        : { style: { x: leftX, opacity: contentOpacity }}
+      )}
+    >
+        <div className="flex items-center space-x-2 justify-center md:justify-start">
           <Image
             src="/Gigsaw_Icon.png"
             alt="Gigsaw"
@@ -76,24 +95,37 @@ export function PhoneShowcase() {
       </motion.div>
 
       {/* Right Column: Phone Carousel */}
-      <motion.div 
-        style={{ 
-          y, 
-          scale,
-          x: rightX,
-          opacity: contentOpacity
-        }} 
-        className="relative z-10"
-      >
+      <motion.div
+      className="relative z-10"
+      {...(isMobile 
+        ? {
+            initial: { opacity: 0, y: 50 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { duration: 0.6, delay: 0.2, ease: "easeOut" }
+          }
+        : { style: { y, scale, x: rightX, opacity: contentOpacity }}
+      )}
+    >
         <AnimatePresence mode="wait">
-          <motion.div
+        <motion.div
             key={currentIndex}
-            initial={{ rotateY: screens[currentIndex].angle - 30 }}
+            initial={{ 
+              opacity: 0,
+              y: isMobile ? 50 : 0,
+              rotateY: isMobile ? 0 : screens[currentIndex].angle - 30 
+            }}
             animate={{
-              rotateY: screens[currentIndex].angle,
+              opacity: 1,
+              y: 0,
+              rotateY: isMobile ? 0 : screens[currentIndex].angle,
               transition: { duration: 0.6, ease: "easeOut" },
             }}
-            exit={{ rotateY: screens[currentIndex].angle + 30 }}
+            exit={{ 
+              opacity: 0,
+              y: isMobile ? -50 : 0,
+              rotateY: isMobile ? 0 : screens[currentIndex].angle + 30 
+            }}
             className="relative w-[240px] h-[480px] rounded-[3rem] border-8 border-gray-800 overflow-hidden shadow-2xl"
             style={{
               perspective: "1500px",
@@ -109,7 +141,7 @@ export function PhoneShowcase() {
             />
           </motion.div>
         </AnimatePresence>
-        
+
         {/* Navigation Dots */}
         <div className="flex justify-center gap-2 mt-8">
           {screens.map((_, index) => (

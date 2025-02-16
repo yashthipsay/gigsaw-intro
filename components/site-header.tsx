@@ -27,10 +27,10 @@ export function SiteHeader() {
 
   return (
     <header
-      className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-lg border-b" : "bg-transparent",
-      )}
+    className={cn(
+      "fixed top-0 w-full z-50 transition-all duration-300 px-4",
+      (isScrolled || isMobileMenuOpen) ? "bg-black backdrop-blur-lg border-b" : "bg-transparent"
+    )}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
