@@ -1,6 +1,7 @@
 "use client"
 
 export function VideoBackground({ className }: { className?: string }) {
+  const videoUrl = "https://gigsaw.s3.eu-north-1.amazonaws.com/site-header.mp4";
   return (
     <video
       autoPlay
@@ -10,7 +11,7 @@ export function VideoBackground({ className }: { className?: string }) {
       preload="auto"
       className={`fixed top-0 left-0 w-screen min-h-screen object-cover ${className}`}
     >
-      <source src="/site-header.mp4" type="video/mp4" />
+      <source src={videoUrl} type="video/mp4" />
       Your browser does not support the video element.
     </video>
   )

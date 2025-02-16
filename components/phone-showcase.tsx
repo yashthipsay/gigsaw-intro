@@ -1,3 +1,4 @@
+"use client"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
@@ -6,10 +7,12 @@ export function PhoneShowcase() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const screens = [
-    { src: "/image-1.jpg", angle: -15 },
-    { src: "/image-2.jpg", angle: 0 },
-    { src: "/image-3.jpg", angle: 15 },
+    { src: "https://gigsaw.s3.eu-north-1.amazonaws.com/image-1.jpg", angle: -15 },
+    { src: "https://gigsaw.s3.eu-north-1.amazonaws.com/image-2.jpg", angle: 0 },
+    { src: "https://gigsaw.s3.eu-north-1.amazonaws.com/image-3.jpg", angle: 15 },
   ]
+
+  const iconUrl = "https://gigsaw.s3.eu-north-1.amazonaws.com/Gigsaw_Icon.png";
 
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
@@ -75,7 +78,7 @@ export function PhoneShowcase() {
     >
         <div className="flex items-center space-x-2 justify-center md:justify-start">
           <Image
-            src="/Gigsaw_Icon.png"
+            src={iconUrl}
             alt="Gigsaw"
             width={60}
             height={60}
