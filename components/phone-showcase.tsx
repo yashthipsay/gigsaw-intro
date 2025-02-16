@@ -19,12 +19,6 @@ export function PhoneShowcase() {
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  // Variant for mobile fade-in
-  const mobileVariant = {
-    initial: { opacity: 0, y: 50 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.2 }
-  }
 
   useEffect(() => {
     const timer = setInterval(() => {
