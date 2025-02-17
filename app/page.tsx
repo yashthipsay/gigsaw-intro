@@ -98,7 +98,7 @@ export default function Home() {
       </section>
 
       {/* Features Section (opaque to hide video) */}
-      <section className="py-24 relative bg-background">
+      <section className="relative bg-gradient-to-r from-purple-200/50 to-transparent backdrop-blur-xl border border-white/20 rounded-lg p-6">
         <div className="container px-4 mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Everything You Need</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -117,25 +117,29 @@ export default function Home() {
       </section>
 
       {/* Stats and Download Sections (opaque to hide video) */}
-      <section className="py-24 relative bg-background">
-        <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <StatsCounter key={index} value={stat.value} label={stat.label} decimal={stat.decimal} delay={index * 0.1} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="relative bg-gradient-to-r from-purple-200/50 to-transparent backdrop-blur-xl border border-white/20 rounded-lg p-6 flex flex-col gap-28">
+  <div className="container px-4 mx-auto">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
+      {stats.map((stat, index) => (
+        <StatsCounter 
+          key={index} 
+          value={stat.value} 
+          label={stat.label} 
+          decimal={stat.decimal} 
+          delay={index * 0.1} 
+        />
+      ))}
+    </div>
+  </div>
 
-      <section className="py-24 relative bg-background">
-        <div className="container px-4 mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="max-w-2xl mx-auto"
-          >
+  <div className="container px-4 mx-auto text-center">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="max-w-2xl mx-auto"
+    >
             <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to Transform Your Music Journey?</h2>
             <p className="text-xl text-gray-300 mb-12">
               Join thousands of musicians already using Gigsaw to elevate their craft.
