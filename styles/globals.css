@@ -76,3 +76,10 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-width: 768px) {
+  .video-background {
+    width: 100%;
+    height: auto;
+  }
+}
